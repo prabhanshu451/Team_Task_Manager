@@ -1,219 +1,106 @@
-# TeamFlow — Team Task Manager
+# Team Task Manager
 
-A full-stack collaborative task management application built with React, Node.js, Express, and MongoDB.
+A full-stack web application for managing team projects and tasks with role-based access control.
 
-## 🚀 Live Demo
-> Add your live Railway URL here after deployment
-
-## 📁 GitHub Repository
-> Add your GitHub repo URL here
+**Live App:** https://teamtaskmanager-production-909a.up.railway.app  
+**GitHub:** https://github.com/prabhanshu451/Team_Task_Manager
 
 ---
 
-## ✨ Features
+## What it does
 
-### Authentication
-- Signup with Name, Email, Password (bcrypt hashed)
-- JWT-based secure login (7-day expiry)
-- Protected routes on frontend and backend
-
-### Project Management
-- Create projects (creator auto-assigned Admin role)
-- Admin can add/remove members by email
-- Admin can assign roles (Admin / Member)
-- View all projects you're a member of
-
-### Task Management
-- Create tasks with Title, Description, Due Date, Priority
-- Assign tasks to project members
-- Kanban board view: To Do / In Progress / Done
-- Overdue task highlighting
-- Admin: full CRUD on tasks
-- Member: view & update status of assigned tasks only
-
-### Dashboard
-- Total task count
-- Tasks by status (Pie chart)
-- Tasks by priority (Bar chart)
-- Tasks per team member (Horizontal bar chart)
-- Overdue task count
-
-### Role-Based Access Control
-| Feature | Admin | Member |
-|---|---|---|
-| Create/Delete project | ✅ | ❌ |
-| Add/Remove members | ✅ | ❌ |
-| Create/Delete tasks | ✅ | ❌ |
-| Assign tasks | ✅ | ❌ |
-| Update task status | ✅ | ✅ (own tasks) |
-| View all tasks | ✅ | ❌ (own only) |
+Users can create projects, assign tasks to team members, and track progress — all in one place. Access is role-based, so Admins stay in control while Members focus only on their assigned work.
 
 ---
 
-## 🛠 Tech Stack
+## Features
 
-**Frontend:** React 18, React Router v6, Recharts, Axios, Vite  
-**Backend:** Node.js, Express.js  
-**Database:** MongoDB (Mongoose)  
-**Auth:** JWT + bcryptjs  
-**Deployment:** Railway
+**Authentication**
+- Signup and login with JWT-based sessions
+- Passwords hashed using bcrypt
+- All routes protected on both frontend and backend
 
----
+**Projects**
+- Create a project and automatically become its Admin
+- Add or remove team members by email
+- Each member has a role — Admin or Member
 
-## 📦 Local Setup
+**Tasks**
+- Create tasks with title, description, due date, and priority
+- Assign tasks to specific members
+- Track with three statuses — To Do, In Progress, Done
+- Overdue tasks are highlighted automatically
 
-### Prerequisites
-- Node.js >= 18
-- MongoDB Atlas account (free tier works)
+**Dashboard**
+- Total tasks, completed, in-progress, and overdue at a glance
+- Charts for tasks by status, priority, and per team member
 
-### 1. Clone the repository
-```bash
-git clone <your-repo-url>
-cd team-task-manager
-```
-
-### 2. Backend Setup
-```bash
-cd backend
-cp .env.example .env
-# Edit .env with your MongoDB URI and JWT secret
-npm install
-npm start
-```
-
-### 3. Frontend Setup (separate terminal)
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-App runs at: `http://localhost:5173`
+**Role-Based Access**
+- Admins — full control over tasks and members
+- Members — can only view and update status of their own assigned tasks
 
 ---
 
-## 🚂 Railway Deployment
+## Tech Stack
 
-### Step 1: MongoDB Atlas
-1. Go to [mongodb.com/cloud/atlas](https://mongodb.com/cloud/atlas) → Create free cluster
-2. Create a database user
-3. Whitelist all IPs: `0.0.0.0/0`
-4. Copy connection string
-
-### Step 2: Push to GitHub
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin <your-github-repo-url>
-git push -u origin main
-```
-
-### Step 3: Deploy on Railway
-1. Go to [railway.app](https://railway.app) → New Project
-2. Connect GitHub → Select your repo
-3. Add environment variables:
-   ```
-   MONGODB_URI=mongodb+srv://...
-   JWT_SECRET=your_random_secret_string
-   NODE_ENV=production
-   ```
-4. Railway auto-detects build command (`npm run build`) and start (`npm start`)
-5. Click **Deploy** — Railway gives you a public URL
-
-### Step 4: Update Frontend URL (optional)
-Set `FRONTEND_URL` env var to your Railway URL if you want to restrict CORS.
-
----
-
-## 🔑 Environment Variables
-
-| Variable | Description |
+| Layer | Technology |
 |---|---|
-| `MONGODB_URI` | MongoDB Atlas connection string |
-| `JWT_SECRET` | Secret key for JWT signing (use a random 32+ char string) |
-| `PORT` | Port number (Railway sets this automatically) |
-| `FRONTEND_URL` | Frontend origin for CORS (optional, defaults to `*`) |
+| Frontend | React 18, React Router, Recharts, Axios |
+| Backend | Node.js, Express.js |
+| Database | MongoDB with Mongoose |
+| Auth | JWT + bcryptjs |
+| Deployment | Railway |
 
 ---
 
-## 📡 API Endpoints
+## API Overview
 
-### Auth
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/auth/signup` | Register new user |
-| POST | `/api/auth/login` | Login & get JWT |
-| GET | `/api/auth/me` | Get current user |
+**Auth**
+- `POST /api/auth/signup`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
 
-### Projects
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/projects` | List user's projects |
-| POST | `/api/projects` | Create project |
-| GET | `/api/projects/:id` | Get project details |
-| PUT | `/api/projects/:id` | Update project (Admin) |
-| DELETE | `/api/projects/:id` | Delete project (Admin) |
-| POST | `/api/projects/:id/members` | Add member (Admin) |
-| DELETE | `/api/projects/:id/members/:userId` | Remove member (Admin) |
+**Projects**
+- `GET /api/projects`
+- `POST /api/projects`
+- `POST /api/projects/:id/members`
+- `DELETE /api/projects/:id/members/:userId`
 
-### Tasks
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/tasks?projectId=` | List tasks |
-| POST | `/api/tasks` | Create task (Admin) |
-| GET | `/api/tasks/:id` | Get task |
-| PUT | `/api/tasks/:id` | Update task |
-| DELETE | `/api/tasks/:id` | Delete task (Admin) |
+**Tasks**
+- `GET /api/tasks?projectId=`
+- `POST /api/tasks`
+- `PUT /api/tasks/:id`
+- `DELETE /api/tasks/:id`
 
-### Dashboard
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/dashboard?projectId=` | Get project statistics |
+**Dashboard**
+- `GET /api/dashboard?projectId=`
 
 ---
 
-## 📂 Project Structure
+## Database Design
+
+**User** — name, email, hashed password  
+**Project** — name, description, creator, members with roles  
+**Task** — title, description, due date, priority, status, project ref, assignee ref
+
+---
+
+## Folder Structure
 
 ```
-team-task-manager/
+Team_Task_Manager/
 ├── backend/
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Project.js
-│   │   └── Task.js
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── projects.js
-│   │   ├── tasks.js
-│   │   └── dashboard.js
-│   ├── middleware/
-│   │   └── auth.js
-│   ├── server.js
-│   └── package.json
+│   ├── models/        # User, Project, Task schemas
+│   ├── routes/        # auth, projects, tasks, dashboard
+│   ├── middleware/    # JWT auth middleware
+│   └── server.js
 ├── frontend/
 │   ├── src/
-│   │   ├── api/client.js
-│   │   ├── context/AuthContext.jsx
-│   │   ├── pages/
-│   │   │   ├── Login.jsx
-│   │   │   ├── Signup.jsx
-│   │   │   ├── Projects.jsx
-│   │   │   └── ProjectDetail.jsx
-│   │   ├── components/
-│   │   │   ├── Layout.jsx
-│   │   │   └── TaskModal.jsx
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   ├── index.html
-│   └── package.json
-├── package.json        ← root build script for Railway
+│   │   ├── pages/     # Login, Signup, Projects, ProjectDetail
+│   │   ├── components/# Layout, TaskModal
+│   │   ├── context/   # Auth context
+│   │   └── api/       # Axios client
+│   └── index.html
 ├── railway.json
 └── README.md
 ```
-
----
-
-## 👤 Author
-Built as part of a full-stack coding assessment.
